@@ -1,5 +1,10 @@
 import pool from "../config/database.js";
 import formatOracleData from "../utils/helpers.js";
+import ExcelJs from "exceljs";
+import { cellMapper, classSubclassRowMapper } from "./IRA-class-prem-mapper.js";
+
+//the file path
+const filePath = "test_file.xlsx";
 
 export class IRAPremClass {
   constructor() {}
@@ -284,8 +289,47 @@ ORDER BY a.pr_org_code, a.pr_mc_code, pr_order`;
       const results = (await connection).execute(query, {
         p_org_code: "50",
       });
-      const finalResults = await results;
-      return res.status(200).json({ results: formatOracleData(finalResults) });
+      const finalResults = formatOracleData(await results);
+      //initiate the workbook or the excel package
+      const workbook = new ExcelJs.Workbook();
+
+      // read the file
+      workbook.xlsx
+        .readFile(filePath)
+        .then(() => {
+          const worksheet = workbook.getWorksheet("59-1B (a)");
+
+          Object.entries(classSubclassRowMapper).forEach(
+            ([classSubKey, targetRow]) => {
+              const [classKey, subClassKey] = classSubKey.split("|");
+
+              const filteredResults = finalResults.filter(
+                (item) =>
+                  item.CLASS === classKey && item.SUB_CLASS === subClassKey
+              );
+              if (filteredResults.length > 0) {
+                filteredResults.forEach((dataItem) => {
+                  for (const [field, column] of Object.entries(cellMapper)) {
+                    const cell = worksheet.getCell(`${column}${targetRow}`);
+                    cell.value = dataItem[field];
+                    console.log(
+                      `${field} (${column}${targetRow}): ${dataItem[field]}`
+                    );
+                  }
+                });
+              }
+            }
+          );
+        })
+        .then(async () => {
+          await workbook.xlsx.writeFile(filePath);
+          return console.log("Data written successfully");
+        })
+        .catch((err) => {
+          console.error("Error modifying the Excel file:", err);
+        });
+
+      return res.status(200).json({ results: finalResults });
     } catch (error) {
       console.error("error getting the premiums", error);
       return res.status(500).json(error);

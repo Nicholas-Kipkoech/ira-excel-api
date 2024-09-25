@@ -10,9 +10,11 @@ const workbook = new ExcelJs.Workbook();
 workbook.xlsx
   .readFile(filePath)
   .then(() => {
-    const worksheet = workbook.getWorksheet("Details");
-    const cell = worksheet.getCell("F10");
-    console.log(cell.value);
+    const worksheet = workbook.getWorksheet("59-1B (a)");
+    const row = worksheet.getRow("17");
+    for (let i = 6; i <= 13; i++) {
+      console.log(row.getCell(i).address, row.getCell(i).value);
+    }
   })
   .then(() => {
     console.log("Data added successfully!");
