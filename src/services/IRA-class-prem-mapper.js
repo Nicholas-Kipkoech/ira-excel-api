@@ -57,6 +57,58 @@ export const classSubclassRowMapper2 = {
   "Miscellaneous|Bonds": 44,
 };
 
+export const classSubclassRowMapper3 = {
+  "Engineering|Contractors' All Risks": 17,
+  "Engineering|Others": 18,
+  "Fire Domestic|Fire Domestic": 19,
+  "Fire Industrial|Fire Industrial": 20,
+  "Liability|Others": 23,
+  "Liability|Products Liability": 21,
+  "Liability|Professional Indemnity": 22,
+  "Marine|Carriers Liability": 26,
+  "Marine|MARINE HULL AND LIABILITY": 24,
+  "Marine|Marine Cargo": 25,
+  "Marine|Others": 27,
+  "Motor Private|Comprehensive": 28,
+  "Motor Private|Third Party Only": 30,
+  "Motor Commercial|Comprehensive": 31,
+  "Motor Commercial|Third Party Only": 33,
+  "Psv|Comprehensive": 32,
+  "Personal Accident|Personal Accident": 34,
+  "Theft|Cash in Transit": 35,
+  "Theft|Fidelity Guarantee": 36,
+  "Theft|Burglary Others": 37,
+  "Workmens Compensation|Workmens Compensation": 38,
+  "Miscellaneous|Others": 40,
+  "Miscellaneous|Bonds": 43,
+};
+
+export const classSubclassRowMapper4 = {
+  "Engineering|Contractors' All Risks": 16,
+  "Engineering|Others": 17,
+  "Fire Domestic|Fire Domestic": 18,
+  "Fire Industrial|Fire Industrial": 19,
+  "Liability|Others": 22,
+  "Liability|Products Liability": 20,
+  "Liability|Professional Indemnity": 21,
+  // "Marine|Carriers Liability": 26,
+  // "Marine|MARINE HULL AND LIABILITY": 24,
+  "Marine|Marine Cargo": 24,
+  "Marine|Others": 26,
+  "Motor Private|Comprehensive": 27,
+  "Motor Private|Third Party Only": 39,
+  "Motor Commercial|Comprehensive": 30,
+  "Motor Commercial|Third Party Only": 32,
+  "Psv|Comprehensive": 33,
+  "Personal Accident|Personal Accident": 36,
+  "Theft|Cash in Transit": 37,
+  "Theft|Fidelity Guarantee": 38,
+  "Theft|Burglary Others": 39,
+  "Workmens Compensation|Workmens Compensation": 40,
+  "Miscellaneous|Others": 45,
+  "Miscellaneous|Bonds": 43,
+};
+
 export const cellMapper2 = {
   policiesNB: "F",
   sumInsuredNB: "H",
@@ -75,4 +127,16 @@ export const cellMapper3 = {
   COMM_SURPLUS: "H",
   COMM_XOL: "I",
   COMM_FAC: "J",
+};
+
+export const cellMapper4 = {
+  OUTWARD_RECOVERY: "H",
+  DIRECT: "F",
+};
+
+export const cellMapper5 = {
+  PREM_SURPLUS: "G",
+  PREM_FAC: "I",
+  PREM_QS: "F",
+  PREM_XOL: "H",
 };
