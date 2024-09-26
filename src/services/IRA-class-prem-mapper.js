@@ -31,6 +31,32 @@ export const classSubclassRowMapper = {
   "Miscellaneous|Bonds": 42,
 };
 
+export const classSubclassRowMapper2 = {
+  "Engineering|Contractors' All Risks": 18,
+  "Engineering|Others": 19,
+  "Fire Domestic|Fire Domestic": 20,
+  "Fire Industrial|Fire Industrial": 21,
+  "Liability|Others": 24,
+  "Liability|Products Liability": 22,
+  "Liability|Professional Indemnity": 23,
+  "Marine|Carriers Liability": 27,
+  "Marine|MARINE HULL AND LIABILITY": 25,
+  "Marine|Marine Cargo": 26,
+  "Marine|Others": 28,
+  "Motor Private|Comprehensive": 29,
+  "Motor Private|Third Party Only": 31,
+  "Motor Commercial|Comprehensive": 32,
+  "Motor Commercial|Third Party Only": 34,
+  "Psv|Comprehensive": 35,
+  "Personal Accident|Personal Accident": 38,
+  "Theft|Cash in Transit": 39,
+  "Theft|Fidelity Guarantee": 40,
+  "Theft|Burglary Others": 41,
+  "Workmens Compensation|Workmens Compensation": 42,
+  "Miscellaneous|Others": 47,
+  "Miscellaneous|Bonds": 44,
+};
+
 export const cellMapper2 = {
   policiesNB: "F",
   sumInsuredNB: "H",
@@ -41,4 +67,12 @@ export const cellMapper2 = {
   policiesBF: "N",
   sumInsuredBF: "P",
   premiumBF: "Q",
+};
+
+export const cellMapper3 = {
+  COMM_DIRECT: "F",
+  COMM_QS: "G",
+  COMM_SURPLUS: "H",
+  COMM_XOL: "I",
+  COMM_FAC: "J",
 };

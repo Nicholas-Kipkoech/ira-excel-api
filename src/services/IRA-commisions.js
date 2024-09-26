@@ -1,8 +1,8 @@
 import pool from "../config/database.js";
 import ExcelJs from "exceljs";
 import {
-  cellMapper2,
-  classSubclassRowMapper,
+  cellMapper3,
+  classSubclassRowMapper2,
 } from "./IRA-class-prem-mapper.js";
 import formatOracleData from "../utils/helpers.js";
 
@@ -579,40 +579,40 @@ ORDER BY
       //initiate the workbook or the excel package
       const workbook = new ExcelJs.Workbook();
 
-      //   workbook.xlsx
-      //     .readFile(filePath)
-      //     .then(() => {
-      //       const worksheet = workbook.getWorksheet("59-11B");
+      workbook.xlsx
+        .readFile(filePath)
+        .then(() => {
+          const worksheet = workbook.getWorksheet("59-1B (d)");
 
-      //       Object.entries(classSubclassRowMapper).forEach(
-      //         ([classSubKey, targetRow]) => {
-      //           const [classKey, subClassKey] = classSubKey.split("|");
+          Object.entries(classSubclassRowMapper2).forEach(
+            ([classSubKey, targetRow]) => {
+              const [classKey, subClassKey] = classSubKey.split("|");
 
-      //           const filteredResults = finalResults.filter(
-      //             (item) =>
-      //               item.class === classKey && item.subClass === subClassKey
-      //           );
-      //           if (filteredResults.length > 0) {
-      //             filteredResults.forEach((dataItem) => {
-      //               for (const [field, column] of Object.entries(cellMapper2)) {
-      //                 const cell = worksheet.getCell(`${column}${targetRow + 1}`);
-      //                 cell.value = dataItem[field];
-      //                 console.log(
-      //                   `${field} (${column}${targetRow}): ${dataItem[field]}`
-      //                 );
-      //               }
-      //             });
-      //           }
-      //         }
-      //       );
-      //     })
-      //     .then(async () => {
-      //       await workbook.xlsx.writeFile(filePath);
-      //       return console.log("Data written successfully");
-      //     })
-      //     .catch((err) => {
-      //       console.error("Error modifying the Excel file:", err);
-      //     });
+              const filteredResults = finalResults.filter(
+                (item) =>
+                  item.CLASS === classKey && item.SUB_CLASS === subClassKey
+              );
+              if (filteredResults.length > 0) {
+                filteredResults.forEach((dataItem) => {
+                  for (const [field, column] of Object.entries(cellMapper3)) {
+                    const cell = worksheet.getCell(`${column}${targetRow}`);
+                    cell.value = dataItem[field];
+                    console.log(
+                      `${field} (${column}${targetRow}): ${dataItem[field]}`
+                    );
+                  }
+                });
+              }
+            }
+          );
+        })
+        .then(async () => {
+          await workbook.xlsx.writeFile(filePath);
+          return console.log("Data written successfully");
+        })
+        .catch((err) => {
+          console.error("Error modifying the Excel file:", err);
+        });
 
       return res.status(200).json({ results: finalResults });
     } catch (error) {
