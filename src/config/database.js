@@ -17,6 +17,10 @@ function getDbkeys() {
     user = process.env.INTRA_DATABASE_USER;
     password = process.env.INTRA_DATABASE_PASSWORD;
     connString = process.env.INTRA_DATABASE_CONN_STRING;
+  } else if (process.env.ENVIROMENT === "LOCAL") {
+    user = process.env.LOCAL_DATABASE_USER;
+    password = process.env.LOCAL_DATABASE_PASSWORD;
+    connString = process.env.LOCAL_DATABASE_CONN_STRING;
   }
   return { user, password, connString };
 }
