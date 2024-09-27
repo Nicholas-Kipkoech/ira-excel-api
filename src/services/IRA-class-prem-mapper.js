@@ -109,6 +109,33 @@ export const classSubclassRowMapper4 = {
   "Miscellaneous|Bonds": 43,
 };
 
+export const classSubclassRowMapper5 = {
+  "Engineering|Contractors' All Risks": 16,
+  "Engineering|Others": 17,
+  "Fire Domestic|Fire Domestic": 18,
+  "Fire Industrial|Fire Industrial": 19,
+  "Liability|Others": 22,
+  "Liability|Products Liability": 20,
+  "Liability|Professional Indemnity": 21,
+  "Marine|Carriers Liability": 25,
+  "Marine|MARINE HULL AND LIABILITY": 23,
+  "Marine|Marine Cargo": 24,
+  "Marine|Others": 26,
+  "Motor Private|Comprehensive": 27,
+  "Motor Private|Third Party Only": 39,
+  "Motor Commercial|Comprehensive": 30,
+  "Motor Commercial|Third Party Only": 32,
+  "Psv|Comprehensive": 33,
+  "Psv|Third Party Onlye": 35,
+  "Personal Accident|Personal Accident": 36,
+  "Theft|Cash in Transit": 37,
+  "Theft|Fidelity Guarantee": 38,
+  "Theft|Burglary Others": 39,
+  "Workmens Compensation|Workmens Compensation": 40,
+  "Miscellaneous|Others": 45,
+  "Miscellaneous|Bonds": 43,
+};
+
 export const cellMapper2 = {
   policiesNB: "F",
   sumInsuredNB: "H",
@@ -139,4 +166,13 @@ export const cellMapper5 = {
   PREM_FAC: "I",
   PREM_QS: "F",
   PREM_XOL: "H",
+};
+
+export const cellMapper6 = {
+  GROSS_UPR_BFWD_DIRECT: "F",
+  GROSS_UPR_BFWD_FACIN: "G",
+  GROSS_UPR_BFWD_OUTWARD: "H",
+  GROSS_UPR_CFWD_DIRECT: "K",
+  GROSS_UPR_CFWD_FACIN: "L",
+  GROSS_UPR_CFWD_OUTWARD: "M",
 };

@@ -402,7 +402,7 @@ ORDER BY 1, 2, 4`;
                 filteredResults.forEach((dataItem) => {
                   for (const [field, column] of Object.entries(cellMapper5)) {
                     const cell = worksheet.getCell(`${column}${targetRow}`);
-                    cell.value += dataItem[field];
+                    cell.value = dataItem[field];
                     console.log(
                       `${field} (${column}${targetRow}): ${dataItem[field]}`
                     );
