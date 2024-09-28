@@ -5,6 +5,7 @@ import { IRACommissionService } from "../services/IRA-commisions.js";
 import { IRAIncurredClaimsService } from "../services/IRAIncurredClaims.js";
 import { IRAReinsurancePremiumsService } from "../services/IRA-reinsurance-premiums.js";
 import { IRAUnearnedPremiumsService } from "../services/IRA-unearned-premiums.js";
+import { IRAPremiumsByCounty } from "../services/IRA-premiums-county.js";
 
 const IRApremRouter = Router();
 
@@ -26,6 +27,9 @@ IRApremRouter.post("/ira-reinsurance-premiums", (req, res) => {
 });
 IRApremRouter.post("/ira-unearned-premiums", (req, res) => {
   IRAUnearnedPremiumsService.getUnearnedPremiums(req, res);
+});
+IRApremRouter.post("/ira-premiums-county", (req, res) => {
+  IRAPremiumsByCounty.getPremiumsByCounty(req, res);
 });
 
 export default IRApremRouter;
