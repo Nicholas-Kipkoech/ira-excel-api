@@ -136,6 +136,22 @@ export const classSubclassRowMapper5 = {
   "Miscellaneous|Bonds": 43,
 };
 
+export const classSubclassRowMapper6 = {
+  "Engineering|": 14,
+  "Fire Domestic|": 15,
+  "Fire Industrial|": 16,
+  "Liability|": 17,
+  "Marine|MARINE HULL AND LIABILITY": 19,
+  "Marine|Marine Cargo": 20,
+  "Motor Private|": 21,
+  "Motor Commercial|": 22,
+  "Psv|": 23,
+  "Personal Accident|": 24,
+  "Theft|": 25,
+  "Workmens Compensation|": 26,
+  "Miscellaneous|": 28,
+};
+
 export const cellMapper2 = {
   policiesNB: "F",
   sumInsuredNB: "H",
@@ -175,4 +191,8 @@ export const cellMapper6 = {
   GROSS_UPR_CFWD_DIRECT: "K",
   GROSS_UPR_CFWD_FACIN: "L",
   GROSS_UPR_CFWD_OUTWARD: "M",
+};
+
+export const cellMapper7 = {
+  TOTAL_PREMIUMS: "D",
 };
