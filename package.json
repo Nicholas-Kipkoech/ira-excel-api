@@ -17,6 +17,10 @@
     "express": "^4.21.0",
     "nodemon": "^3.1.0",
     "oracledb": "^6.4.0",
+    "proper-lockfile": "^4.1.2",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17"
   }
 }

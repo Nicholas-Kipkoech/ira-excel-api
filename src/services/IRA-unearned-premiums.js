@@ -5,9 +5,10 @@ import {
   classSubclassRowMapper5,
 } from "./IRA-class-prem-mapper.js";
 import formatOracleData from "../utils/helpers.js";
+import { writeFileSafely } from "./excel-service/excel-helper.js";
 
 //the file path
-const filePath = "test_file.xlsx";
+const filePath = "IRA_excel.xlsx";
 
 export class IRAUnearnedPremiumsService {
   constructor() {}
@@ -629,45 +630,40 @@ ORDER BY 1, 2, 4`;
         p_asatdate: new Date(toDate),
       });
       const finalResults = formatOracleData(await results);
-      //initiate the workbook or the excel package
-      const workbook = new ExcelJs.Workbook();
 
-      workbook.xlsx
-        .readFile(filePath)
-        .then(() => {
-          const worksheet = workbook.getWorksheet("59-1B (c)");
+      const updateWorkbook = (workbook) => {
+        const worksheet = workbook.getWorksheet("59-1B (c)");
 
-          Object.entries(classSubclassRowMapper5).forEach(
-            ([classSubKey, targetRow]) => {
-              const [classKey, subClassKey] = classSubKey.split("|");
+        Object.entries(classSubclassRowMapper5).forEach(
+          ([classSubKey, targetRow]) => {
+            const [classKey, subClassKey] = classSubKey.split("|");
 
-              const filteredResults = finalResults.filter(
-                (item) =>
-                  item.CLASS === classKey && item.SUB_CLASS === subClassKey
-              );
-              if (filteredResults.length > 0) {
-                filteredResults.forEach((dataItem) => {
-                  for (const [field, column] of Object.entries(cellMapper6)) {
-                    const cell = worksheet.getCell(`${column}${targetRow}`);
-                    cell.value = dataItem[field];
-                    console.log(
-                      `${field} (${column}${targetRow}): ${dataItem[field]}`
-                    );
-                  }
-                });
-              }
+            const filteredResults = finalResults.filter(
+              (item) =>
+                item.CLASS === classKey && item.SUB_CLASS === subClassKey
+            );
+            if (filteredResults.length > 0) {
+              filteredResults.forEach((dataItem) => {
+                for (const [field, column] of Object.entries(cellMapper6)) {
+                  const cell = worksheet.getCell(`${column}${targetRow}`);
+                  cell.value = dataItem[field];
+                  console.log(
+                    `${field} (${column}${targetRow}): ${dataItem[field]}`
+                  );
+                }
+              });
             }
-          );
-        })
-        .then(async () => {
-          await workbook.xlsx.writeFile(filePath);
-          return console.log("Data written successfully");
-        })
-        .catch((err) => {
-          console.error("Error modifying the Excel file:", err);
-        });
+          }
+        );
+      };
+      // Use writeFileSafely to handle file locking and write operation
+      await writeFileSafely(filePath, updateWorkbook);
 
-      return res.status(200).json({ results: finalResults });
+      // Send a success response
+      return res.status(200).json({
+        message: "Data written successfully",
+        results: finalResults,
+      });
     } catch (error) {
       console.error("error getting the commissions", error);
       return res.status(500).json(error);

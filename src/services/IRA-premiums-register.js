@@ -6,9 +6,10 @@ import {
   cellMapper7,
   classSubclassRowMapper6,
 } from "./IRA-class-prem-mapper.js";
+import { writeFileSafely } from "./excel-service/excel-helper.js";
 
 //the file path
-const filePath = "test_file.xlsx";
+const filePath = "IRA_excel.xlsx";
 
 export class IRAPremiumRegisterService {
   constructor() {}
@@ -401,73 +402,68 @@ GROUP BY pr_sub_class, pr_class
         pr_to_dt: new Date(toDate),
       });
       const finalResults = formatOracleData(await results);
-      //initiate the workbook or the excel package
-      const workbook = new ExcelJs.Workbook();
 
-      workbook.xlsx
-        .readFile(filePath)
-        .then(() => {
-          const worksheet = workbook.getWorksheet("70-3A");
+      const updateWorkbook = (workbook) => {
+        const worksheet = workbook.getWorksheet("70-3A");
 
-          Object.entries(classSubclassRowMapper6).forEach(
-            ([classSubKey, targetRow]) => {
-              const [classKey, subClassKey] = classSubKey.split("|");
+        Object.entries(classSubclassRowMapper6).forEach(
+          ([classSubKey, targetRow]) => {
+            const [classKey, subClassKey] = classSubKey.split("|");
 
-              // Filter the results based on the class and subclass
-              const filteredResults = finalResults.filter(
-                (item) =>
-                  item.PR_CLASS === classKey &&
-                  (subClassKey === "" || item.PR_SUB_CLASS === subClassKey)
-              );
+            // Filter the results based on the class and subclass
+            const filteredResults = finalResults.filter(
+              (item) =>
+                item.PR_CLASS === classKey &&
+                (subClassKey === "" || item.PR_SUB_CLASS === subClassKey)
+            );
 
-              if (filteredResults.length > 0) {
-                // If subClassKey is empty, calculate totals for fields where PR_CLASS is the same
-                if (subClassKey === "") {
-                  const totals = {};
+            if (filteredResults.length > 0) {
+              // If subClassKey is empty, calculate totals for fields where PR_CLASS is the same
+              if (subClassKey === "") {
+                const totals = {};
 
-                  filteredResults.forEach((dataItem) => {
-                    for (const [field, column] of Object.entries(cellMapper7)) {
-                      // Initialize totals if not present
-                      if (!totals[field]) totals[field] = 0;
+                filteredResults.forEach((dataItem) => {
+                  for (const [field, column] of Object.entries(cellMapper7)) {
+                    // Initialize totals if not present
+                    if (!totals[field]) totals[field] = 0;
 
-                      // Add the values from the data items
-                      totals[field] += dataItem[field] || 0;
-                    }
-                  });
+                    // Add the values from the data items
+                    totals[field] += dataItem[field] || 0;
+                  }
+                });
 
-                  // Write totals to the targetRow
+                // Write totals to the targetRow
+                for (const [field, column] of Object.entries(cellMapper7)) {
+                  const cell = worksheet.getCell(`${column}${targetRow}`);
+                  cell.value = totals[field];
+                  console.log(
+                    `Total ${field} (${column}${targetRow}): ${totals[field]}`
+                  );
+                }
+              } else {
+                // For non-empty subClassKey, process individual records
+                filteredResults.forEach((dataItem) => {
                   for (const [field, column] of Object.entries(cellMapper7)) {
                     const cell = worksheet.getCell(`${column}${targetRow}`);
-                    cell.value = totals[field];
+                    cell.value = dataItem[field];
                     console.log(
-                      `Total ${field} (${column}${targetRow}): ${totals[field]}`
+                      `${field} (${column}${targetRow}): ${dataItem[field]}`
                     );
                   }
-                } else {
-                  // For non-empty subClassKey, process individual records
-                  filteredResults.forEach((dataItem) => {
-                    for (const [field, column] of Object.entries(cellMapper7)) {
-                      const cell = worksheet.getCell(`${column}${targetRow}`);
-                      cell.value = dataItem[field];
-                      console.log(
-                        `${field} (${column}${targetRow}): ${dataItem[field]}`
-                      );
-                    }
-                  });
-                }
+                });
               }
             }
-          );
-        })
-        .then(async () => {
-          await workbook.xlsx.writeFile(filePath);
-          return console.log("Data written successfully");
-        })
-        .catch((err) => {
-          console.error("Error modifying the Excel file:", err);
-        });
+          }
+        );
+      };
+      // Use writeFileSafely to handle file locking and write operation
+      await writeFileSafely(filePath, updateWorkbook);
 
-      return res.status(200).json({ results: finalResults });
+      // Send a success response
+      return res.status(200).json({
+        message: "Data written successfully",
+        results: finalResults,
+      });
     } catch (error) {
       console.error("error getting the commissions", error);
       return res.status(500).json(error);

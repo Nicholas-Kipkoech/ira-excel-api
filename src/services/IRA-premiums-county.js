@@ -5,9 +5,10 @@ import {
   classSubclassRowMapper5,
 } from "./IRA-class-prem-mapper.js";
 import formatOracleData from "../utils/helpers.js";
+import { writeFileSafely } from "./excel-service/excel-helper.js";
 
 //the file path
-const filePath = "test_file.xlsx";
+const filePath = "IRA_excel.xlsx";
 
 export class IRAPremiumsByCounty {
   constructor() {}
@@ -49,31 +50,24 @@ ORDER BY 2`;
         p_to_dt: new Date(toDate),
       });
       const finalResults = formatOracleData(await results);
-      //initiate the workbook or the excel package
-      const workbook = new ExcelJs.Workbook();
-
-      workbook.xlsx
-        .readFile(filePath)
-        .then(() => {
-          const worksheet = workbook.getWorksheet("18-1F");
-          const startRow = 10;
-          let currentRow = startRow;
-          finalResults.forEach((value, index) => {
-            worksheet.getCell(`D${currentRow}`).value = value.PHYS_LOC_GRP;
-            console.log(`D${currentRow}, E${currentRow}`);
-            worksheet.getCell(`E${currentRow}`).value = value.PREMIUM;
-            currentRow++;
-          });
-        })
-        .then(async () => {
-          await workbook.xlsx.writeFile(filePath);
-          return console.log("Data written successfully");
-        })
-        .catch((err) => {
-          console.error("Error modifying the Excel file:", err);
+      const updateWorkbook = (workbook) => {
+        const worksheet = workbook.getWorksheet("18-1F");
+        const startRow = 10;
+        let currentRow = startRow;
+        finalResults.forEach((value, index) => {
+          worksheet.getCell(`D${currentRow}`).value = value.PHYS_LOC_GRP;
+          console.log(`D${currentRow}, E${currentRow}`);
+          worksheet.getCell(`E${currentRow}`).value = value.PREMIUM;
+          currentRow++;
         });
+      };
+      await writeFileSafely(filePath, updateWorkbook);
 
-      return res.status(200).json({ results: finalResults });
+      // Send a success response
+      return res.status(200).json({
+        message: "Data written successfully",
+        results: finalResults,
+      });
     } catch (error) {
       console.error("error getting the commissions", error);
       return res.status(500).json(error);

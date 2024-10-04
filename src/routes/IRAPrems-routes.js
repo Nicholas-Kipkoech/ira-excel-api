@@ -7,34 +7,38 @@ import { IRAReinsurancePremiumsService } from "../services/IRA-reinsurance-premi
 import { IRAUnearnedPremiumsService } from "../services/IRA-unearned-premiums.js";
 import { IRAPremiumsByCounty } from "../services/IRA-premiums-county.js";
 import { IRAPremiumRegisterService } from "../services/IRA-premiums-register.js";
+import { IRAReinsuranceBalancesService } from "../services/IRA-reinsurance-balanace-.js";
 
 const IRApremRouter = Router();
 
-IRApremRouter.post("/ira-premiums", (req, res) => {
+IRApremRouter.get("/ira-premiums", (req, res) => {
   IRAPremClass.getPremiums(req, res);
 });
-IRApremRouter.post("/business-force", (req, res) => {
+IRApremRouter.get("/business-force", (req, res) => {
   IRABusinessForce.getBusinessForcePrems(req, res);
 });
 
-IRApremRouter.post("/ira-commisions", (req, res) => {
+IRApremRouter.get("/ira-commisions", (req, res) => {
   IRACommissionService.getCommissions(req, res);
 });
-IRApremRouter.post("/ira-incurred-claims", (req, res) => {
+IRApremRouter.get("/ira-incurred-claims", (req, res) => {
   IRAIncurredClaimsService.getIncuredClaims(req, res);
 });
-IRApremRouter.post("/ira-reinsurance-premiums", (req, res) => {
+IRApremRouter.get("/ira-reinsurance-premiums", (req, res) => {
   IRAReinsurancePremiumsService.getReinsurancePremiums(req, res);
 });
-IRApremRouter.post("/ira-unearned-premiums", (req, res) => {
+IRApremRouter.get("/ira-unearned-premiums", (req, res) => {
   IRAUnearnedPremiumsService.getUnearnedPremiums(req, res);
 });
-IRApremRouter.post("/ira-premiums-county", (req, res) => {
+IRApremRouter.get("/ira-premiums-county", (req, res) => {
   IRAPremiumsByCounty.getPremiumsByCounty(req, res);
 });
 
-IRApremRouter.post("/ira-premiums-register", (req, res) => {
+IRApremRouter.get("/ira-premiums-register", (req, res) => {
   IRAPremiumRegisterService.getPremiums(req, res);
+});
+IRApremRouter.get("/ira-reinsurance-balances", (req, res) => {
+  IRAReinsuranceBalancesService.getBalanceReport(req, res);
 });
 
 export default IRApremRouter;
