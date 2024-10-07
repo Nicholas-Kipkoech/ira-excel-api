@@ -6,6 +6,7 @@ import {
   cellMapper2,
   classSubclassRowMapper,
 } from "./IRA-class-prem-mapper.js";
+import { writeFileSafely } from "./excel-service/excel-helper.js";
 
 //the file path
 const filePath = "IRA_excel.xlsx";
@@ -57,64 +58,54 @@ ORDER BY trn_sgl_code ASC`;
         p_asatdate: new Date(toDate),
       });
       const finalResults = formatOracleData(await results);
-      //initiate the workbook or the excel package
-      const workbook = new ExcelJs.Workbook();
 
-      workbook.xlsx
-        .readFile(filePath)
-        .then(() => {
-          const worksheet = workbook.getWorksheet("41-1D (c)");
+      const updateWorkbook = (workbook) => {
+        const worksheet = workbook.getWorksheet("41-1D (c)");
 
-          const dropdownRangeStart = 10; // Start row of the dropdown list
-          const dropdownRangeEnd = 65; // End row of the dropdown list
-          const dropdownColumn = "J"; // The column where the dropdown values are stored
+        const dropdownRangeStart = 10; // Start row of the dropdown list
+        const dropdownRangeEnd = 65; // End row of the dropdown list
+        const dropdownColumn = "J"; // The column where the dropdown values are stored
 
-          // Iterate through your data
-          finalResults.forEach((dataItem) => {
-            let matchedRow = null;
-            // Loop through the dropdown list to find a matching customer
-            for (let row = dropdownRangeStart; row <= dropdownRangeEnd; row++) {
-              const dropdownValue = worksheet.getCell(
-                `${dropdownColumn}${row}`
-              ).value;
-              console.log(
-                "drop down value",
-                dropdownValue,
-                "dataItem",
-                dataItem.CUSTOMER.toUpperCase()
-              );
+        // Iterate through your data
+        finalResults.forEach((dataItem) => {
+          let matchedRow = null;
+          // Loop through the dropdown list to find a matching customer
+          for (let row = dropdownRangeStart; row <= dropdownRangeEnd; row++) {
+            const dropdownValue = worksheet.getCell(
+              `${dropdownColumn}${row}`
+            ).value;
+            console.log(
+              "drop down value",
+              dropdownValue,
+              "dataItem",
+              dataItem.CUSTOMER.toUpperCase()
+            );
 
-              // If the dropdown value matches the CUSTOMER in the data
-              if (dropdownValue === dataItem.CUSTOMER.toUpperCase()) {
-                matchedRow = row; // Save the matching row number
-                break; // Exit the loop once a match is found
-              }
+            // If the dropdown value matches the CUSTOMER in the data
+            if (dropdownValue === dataItem.CUSTOMER.toUpperCase()) {
+              matchedRow = row; // Save the matching row number
+              break; // Exit the loop once a match is found
             }
+          }
 
-            // If a matching dropdown value (customer) is found, fill the corresponding row
-            if (matchedRow) {
-              worksheet.getCell(`D${matchedRow}`).value = dataItem.BALANCE; // Assuming column D is for BALANCE
+          // If a matching dropdown value (customer) is found, fill the corresponding row
+          if (matchedRow) {
+            worksheet.getCell(`D${matchedRow}`).value = dataItem.BALANCE; // Assuming column D is for BALANCE
 
-              console.log(
-                `Filled row ${matchedRow} for customer: ${dataItem.CUSTOMER}`
-              );
-            } else {
-              console.log(
-                `Customer not found in dropdown: ${dataItem.CUSTOMER}`
-              );
-            }
-          });
-        })
-        .then(async () => {
-          await workbook.xlsx.writeFile(filePath);
-          return res.status(200).json({
-            message: "Data written successfully",
-            results: finalResults,
-          });
-        })
-        .catch((err) => {
-          console.error("Error modifying the Excel file:", err);
+            console.log(
+              `Filled row ${matchedRow} for customer: ${dataItem.CUSTOMER}`
+            );
+          } else {
+            console.log(`Customer not found in dropdown: ${dataItem.CUSTOMER}`);
+          }
         });
+      };
+      await writeFileSafely(filePath, updateWorkbook);
+
+      return res.status(200).json({
+        message: "Data written successfully",
+        results: finalResults,
+      });
     } catch (error) {
       console.error("error getting the premiums", error);
       return res.status(500).json(error);

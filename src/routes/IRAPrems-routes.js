@@ -7,7 +7,7 @@ import { IRAReinsurancePremiumsService } from "../services/IRA-reinsurance-premi
 import { IRAUnearnedPremiumsService } from "../services/IRA-unearned-premiums.js";
 import { IRAPremiumsByCounty } from "../services/IRA-premiums-county.js";
 import { IRAPremiumRegisterService } from "../services/IRA-premiums-register.js";
-import { IRAReinsuranceBalancesService } from "../services/IRA-reinsurance-balanace-.js";
+import { IRAReinsuranceBalancesService } from "../services/IRA-reinsurance-balance.js";
 
 const IRApremRouter = Router();
 
