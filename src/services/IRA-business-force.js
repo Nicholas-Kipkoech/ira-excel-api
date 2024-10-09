@@ -9,7 +9,6 @@ import {
 import { writeFileSafely } from "./excel-service/excel-helper.js";
 
 //the file path
-const filePath = "IRA_excel.xlsx";
 
 export class IRABusinessForce {
   constructor() {}
@@ -300,7 +299,7 @@ ORDER BY a.pr_org_code, a.pr_mc_code, pr_order`;
       };
 
       // Use writeFileSafely to handle file locking and write operation
-      await writeFileSafely(filePath, updateWorkbook);
+      await writeFileSafely(updateWorkbook);
 
       // Send a success response
       return res.status(200).json({

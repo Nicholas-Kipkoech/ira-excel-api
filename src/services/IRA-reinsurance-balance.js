@@ -100,7 +100,7 @@ ORDER BY trn_sgl_code ASC`;
           }
         });
       };
-      await writeFileSafely(filePath, updateWorkbook);
+      await writeFileSafely(updateWorkbook);
 
       return res.status(200).json({
         message: "Data written successfully",

@@ -657,7 +657,7 @@ ORDER BY 1, 2, 4`;
         );
       };
       // Use writeFileSafely to handle file locking and write operation
-      await writeFileSafely(filePath, updateWorkbook);
+      await writeFileSafely(updateWorkbook);
 
       // Send a success response
       return res.status(200).json({

@@ -61,7 +61,7 @@ ORDER BY 2`;
           currentRow++;
         });
       };
-      await writeFileSafely(filePath, updateWorkbook);
+      await writeFileSafely(updateWorkbook);
 
       // Send a success response
       return res.status(200).json({
